@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotifyPlaylist-alpha", "SpotifyPlaylist-alpha\SpotifyPlaylist-alpha.csproj", "{46ECACB7-93E6-4002-88DF-0492EA240519}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46ECACB7-93E6-4002-88DF-0492EA240519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46ECACB7-93E6-4002-88DF-0492EA240519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46ECACB7-93E6-4002-88DF-0492EA240519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46ECACB7-93E6-4002-88DF-0492EA240519}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0E475710-C652-4C17-A7E7-E4E5F32C541C}
+	EndGlobalSection
+EndGlobal
