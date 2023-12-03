@@ -4,30 +4,47 @@ namespace SpotifyPlaylist_alpha
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main()
+    {
+        try
         {
-            List<string> playlistSongs = GetPLayListAsync().Result;
+            // Step 1: Get Spotify Playlist
+            List<string> spotifyPlaylist = await SpotifyApiCalls.GetPLayListAsync();
+
+            if (spotifyPlaylist.Count == 0)
+            {
+                Console.WriteLine("No songs found in the Spotify playlist. Exiting.");
+                return;
+            }
+
+            // Step 2: Convert Spotify Playlist to YouTube Playlist
+            // Assuming the first song in the Spotify playlist as the keyword for YouTube search
+            string youtubeKeyword = spotifyPlaylist[0];
+            var youtubeSearchRequest = YoutubeApiCalls.Searcher(youtubeKeyword);
+            var youtubeSearchResponse = youtubeSearchRequest.Execute();
+
+            YoutubeApiCalls.PlayListMaker();  // Creates a new playlist on YouTube
+
+            // Convert Spotify songs to YouTube videos and add them to the playlist
+            YoutubeApiCalls.VideoIds(spotifyPlaylist);
+
+            Console.WriteLine("Conversion completed successfully!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+    }
+            
+
             
         }
-         public static async Task<List<string>> GetPLayListAsync()
-        {
-            List<string> PlayListSongs = new List<string>();
-            SpotifyApiCalls SpotifyApi = new SpotifyApiCalls();
 
-
-            var playlist = await SpotifyApiCalls.GetPlaylistAsync("6lyWdNcyXZmZkI7W46Dd7M");
-            foreach (PlaylistTrack<IPlayableItem> item in playlist.Tracks.Items)
-            {
-                if (item.Track is FullTrack track)
-                {
-                    var Artists = track.Artists;
-                    var artistNames = string.Join(", ", Artists.Select(a => a.Name));
-                    PlayListSongs.Add($"{track.Name} By {artistNames}");
-                    
-                }
-            }
-            return PlayListSongs;
-        }
 
     }
+
+
+
+
+
 }
