@@ -3,12 +3,14 @@ using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
+using Google.Apis.Logging;
 using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Google.Apis.Requests;
 
 namespace SpotifyPlaylist_alpha
 {
@@ -22,9 +24,10 @@ namespace SpotifyPlaylist_alpha
 
         public static YouTubeService youTubeService;
 
+
         static YoutubeApiCalls()
         {
-            var credential = GetCredential();
+            var credential = GetCredential().Result; // Using .Result to wait for the task to complete
             youTubeService = new YouTubeService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
@@ -32,82 +35,112 @@ namespace SpotifyPlaylist_alpha
             });
         }
 
-        private static UserCredential GetCredential()
+        private static async Task<UserCredential> GetCredential()
         {
             using (var stream = new FileStream(CLIENT_SECRET_PATH, FileMode.Open, FileAccess.Read))
             {
-                return GoogleWebAuthorizationBroker.AuthorizeAsync(
+                return await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     new[] { YouTubeService.Scope.Youtube },
                     "user",
                     CancellationToken.None,
-                    new FileDataStore("PlayListMaker")).Result;
+                    new FileDataStore("PlayListMaker"));
             }
         }
 
-        private static Playlist newPlaylist = new Playlist();
-        static public SearchResource.ListRequest Searcher(string keyword)
+        public static SearchResource.ListRequest Searcher(string keyword)
         {
-            
-
             var searchListRequest = youTubeService.Search.List("snippet");
             searchListRequest.Q = keyword;
+            searchListRequest.MaxResults = 1;
             return searchListRequest;
-
-
         }
-        public static void PlayListMaker()// playlist creator 
+
+        public static Playlist PlayListMaker()
         {
-            
-            int i = 0;
-            
+            Console.WriteLine("Starting PlayListMaker...");
+
+            var newPlaylist = new Playlist();
             newPlaylist.Snippet = new PlaylistSnippet();
-            
-                newPlaylist.Snippet.Title = $"PlayListFromSpotify-{i}";
-            
-            
+            newPlaylist.Snippet.Title = "YourPlaylistTitle"; // Set your desired playlist title
             newPlaylist.Status = new PlaylistStatus();
             newPlaylist.Status.PrivacyStatus = "public";
+
             var playlistsInsertRequest = youTubeService.Playlists.Insert(newPlaylist, "snippet,status");
             var playlistResponse = playlistsInsertRequest.Execute();
-        }
-        public static void VideoIds(List<string> PlayList) // getsvideo ids
-        {
-            List<string> ids = new List<string>();
 
+            Console.WriteLine("Playlist created.");
+
+            return playlistResponse;
+        }
+        public static void AddToPlaylist(string playlistId, string videoId)
+        {
+            var newPlaylistItem = new PlaylistItem();
+            newPlaylistItem.Snippet = new PlaylistItemSnippet();
+            newPlaylistItem.Snippet.PlaylistId = playlistId;
+            newPlaylistItem.Snippet.ResourceId = new ResourceId { Kind = "youtube#video", VideoId = videoId };
+
+            var playlistItemsInsertRequest = youTubeService.PlaylistItems.Insert(newPlaylistItem, "snippet");
+            var playlistItemResponse = playlistItemsInsertRequest.Execute();
+        }
+
+
+        public static void SetPlaylist(List<string> PlayList, int maxApiCalls = 100)
+        {
+            var playlistResponse = PlayListMaker();
+
+
+           
+
+            
             foreach (var song in PlayList)
             {
-                var searchRequest = YoutubeApiCalls.Searcher(song);
-                
+                if (apiCallsCounter >= maxApiCalls)
+                {
+                    Console.WriteLine($"Reached the maximum number of API calls ({maxApiCalls}). Exiting loop.");
+                    break;
+                }
+
+                Console.WriteLine($"Processing song: {song}");
+
+
+
+                try
+                {
+                    var searchRequest = YoutubeApiCalls.Searcher(song);
                     var searchResponse = searchRequest.Execute();
 
-                  
-                       
+                    if (searchResponse.Items.Count > 0)
+                    {
                         var firstResult = searchResponse.Items[0];
-                ids.Add(firstResult.Id.ToString());
+                        AddToPlaylist(playlistResponse.Id, firstResult.Id.VideoId);
+                        Console.WriteLine($"The song {song} has been added");
+                    }
+                }
+                catch (Google.GoogleApiException ex)
+                {
+                    Console.WriteLine($"Google API Exception: {ex.Message}");
+                    Console.WriteLine($"HTTP Status Code: {ex.HttpStatusCode}");
+                    // Add more details as needed
+
+                    // Continue to the next song on exception
+                    Console.WriteLine($"Skipping song: {song}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    // Continue to the next song on exception
+                    Console.WriteLine($"Skipping song: {song}");
+                }
 
             }
 
-            var playlistsInsertRequest = youTubeService.Playlists.Insert(newPlaylist, "snippet,status");
-            
-            var playlistResponse = playlistsInsertRequest.Execute();
-
-            foreach (var videoId in ids)
-            {
-                var newPlaylistItem = new PlaylistItem();
-                newPlaylistItem.Snippet = new PlaylistItemSnippet();
-                newPlaylistItem.Snippet.PlaylistId = playlistResponse.Id;
-                newPlaylistItem.Snippet.ResourceId = new ResourceId { Kind = "youtube#video", VideoId = videoId };
-
-                
-                var playlistItemsInsertRequest = youTubeService.PlaylistItems.Insert(newPlaylistItem, "snippet");
-                var playlistItemResponse = playlistItemsInsertRequest.Execute();
-
-                
-            }
-        }
-        
-
+            Console.WriteLine($"Total API Calls: {apiCallsCounter}");
+            Console.WriteLine("SetPlaylist completed.");
         }
     }
+        }
+
+    
+    
 
