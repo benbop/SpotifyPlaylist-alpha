@@ -8,7 +8,7 @@ namespace SpotifyPlaylist_alpha
         {
             YoutubeApiCalls Youtube = new YoutubeApiCalls();
             List<string> spotifyPlaylist = await SpotifyApiCalls.GetPLayListAsync();
-            YoutubeApiCalls.SetPlaylist(spotifyPlaylist);
+            await YoutubeApiCalls.SetPlaylist(spotifyPlaylist);
             
             //try
             //{

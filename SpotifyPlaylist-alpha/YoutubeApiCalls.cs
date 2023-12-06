@@ -73,37 +73,43 @@ namespace SpotifyPlaylist_alpha
 
             return playlistResponse;
         }
-        public static void AddToPlaylist(string playlistId, string videoId)
+        public static async Task AddToPlaylist(string playlistId, string videoid)
         {
             var newPlaylistItem = new PlaylistItem();
             newPlaylistItem.Snippet = new PlaylistItemSnippet();
             newPlaylistItem.Snippet.PlaylistId = playlistId;
-            newPlaylistItem.Snippet.ResourceId = new ResourceId { Kind = "youtube#video", VideoId = videoId };
+            newPlaylistItem.Snippet.ResourceId = new ResourceId { Kind = "youtube#video", VideoId = videoid };
 
-            var playlistItemsInsertRequest = youTubeService.PlaylistItems.Insert(newPlaylistItem, "snippet");
-            var playlistItemResponse = playlistItemsInsertRequest.Execute();
+            try
+            {
+                var playlistItemsInsertRequest = youTubeService.PlaylistItems.Insert(newPlaylistItem, "snippet");
+                var playlistItemResponse = await playlistItemsInsertRequest.ExecuteAsync();
+                Console.WriteLine($"Added video with ID: {videoid} to the playlist.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while adding video with ID {videoid}: {ex.Message}");
+                // Log additional details if needed
+            }
+
         }
 
 
-        public static void SetPlaylist(List<string> PlayList, int maxApiCalls = 100)
+        public static async Task SetPlaylist(List<string> PlayList)
         {
             var playlistResponse = PlayListMaker();
 
 
-           
 
-            
+
+
             foreach (var song in PlayList)
             {
-                if (apiCallsCounter >= maxApiCalls)
-                {
-                    Console.WriteLine($"Reached the maximum number of API calls ({maxApiCalls}). Exiting loop.");
-                    break;
-                }
+
 
                 Console.WriteLine($"Processing song: {song}");
 
-
+                
 
                 try
                 {
@@ -113,7 +119,7 @@ namespace SpotifyPlaylist_alpha
                     if (searchResponse.Items.Count > 0)
                     {
                         var firstResult = searchResponse.Items[0];
-                        AddToPlaylist(playlistResponse.Id, firstResult.Id.VideoId);
+                         await AddToPlaylist(playlistResponse.Id, firstResult.Id.VideoId);
                         Console.WriteLine($"The song {song} has been added");
                     }
                 }
@@ -135,7 +141,7 @@ namespace SpotifyPlaylist_alpha
 
             }
 
-            Console.WriteLine($"Total API Calls: {apiCallsCounter}");
+
             Console.WriteLine("SetPlaylist completed.");
         }
     }
