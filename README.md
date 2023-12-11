@@ -16,8 +16,8 @@ Go to the Spotify Developer Dashboard.
 Create a new application to obtain the Client ID and Client Secret.
 Set environment variables:
 
-1.  export SPOTIFY_CLIENT_ID=your_spotify_client_id
-2. export SPOTIFY_CLIENT_SECRET=your_spotify_client_secret:
+-  export SPOTIFY_CLIENT_ID=your_spotify_client_id
+-  export SPOTIFY_CLIENT_SECRET=your_spotify_client_secret:
 ##
 
 ## **For YouTube**:
@@ -25,8 +25,8 @@ Set environment variables:
 Follow the YouTube API documentation to create a project and obtain an API key.
 Set environment variables:
 
-1. export YOUTUBE_API_KEY=your_youtube_api_key:
-2. Install .NET SDK:
+- export YOUTUBE_API_KEY=your_youtube_api_key:
+- Install .NET SDK:
 
 Follow the instructions here to install the .NET SDK.
 Run the project:
@@ -36,9 +36,9 @@ Run the project:
 cd SpotifyPlaylist_alpha
 dotnet run
 # Usage
-1. Enter the Spotify Playlist ID when prompted.
+- Enter the Spotify Playlist ID when prompted.
 
-2. The program will create a new YouTube playlist and add corresponding videos.
+- The program will create a new YouTube playlist and add corresponding videos.
 
 # Contributing
 If you would like to contribute to this project, feel free to open an issue or submit a pull request.
