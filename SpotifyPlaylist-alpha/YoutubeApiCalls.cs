@@ -23,10 +23,9 @@ namespace SpotifyPlaylist_alpha
 
         public static YouTubeService youTubeService;
 
-
         static YoutubeApiCalls()
         {
-            var credential = GetCredential().Result; // Using .Result to wait for the task to complete
+            var credential = GetCredential().Result;
             youTubeService = new YouTubeService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
