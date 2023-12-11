@@ -17,18 +17,16 @@ Go to the Spotify Developer Dashboard.
 **Set environment variables**:
 1. export SPOTIFY_CLIENT_ID=your_spotify_client_id
 2. export SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-For YouTube:
+## For YouTube:
 
 Follow the YouTube API documentation to create a project and obtain an API key.
-Set environment variables:
-export YOUTUBE_API_KEY=your_youtube_api_key
-Install .NET SDK:
+**Set environment variables**:
+**1. export YOUTUBE_API_KEY=your_youtube_api_key**
+**2. Install .NET SDK:**
 
 Follow the instructions here to install the .NET SDK.
 Run the project:
 
-bash
-Copy code
 cd SpotifyPlaylist_alpha
 dotnet run
 Usage
