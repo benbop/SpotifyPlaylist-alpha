@@ -18,9 +18,8 @@ namespace SpotifyPlaylist_alpha
 
     internal class YoutubeApiCalls
     {
-        private static string APIKEY = "AIzaSyCVR0y4mXry3R82nq-ez4ylaIFG3X--GSw";
-
-        private static string CLIENT_SECRET_PATH = @"C:\Users\bener\Downloads\client_secret_580617838845-hk8ue2u06mqvefjuemee1su917bu116c.apps.googleusercontent.com.json";
+        private static string APIKEY = Environment.GetEnvironmentVariable("YOUTUBE_API_KEY");
+        private static string CLIENT_SECRET_PATH = Environment.GetEnvironmentVariable("YOUTUBE_CLIENT_SECRET_PATH");
 
         public static YouTubeService youTubeService;
 
