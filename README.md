@@ -17,7 +17,7 @@ Create a new application to obtain the Client ID and Client Secret.
 Set environment variables:
 
 1.  export SPOTIFY_CLIENT_ID=your_spotify_client_id
-2. export SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+2. export SPOTIFY_CLIENT_SECRET=your_spotify_client_secret:
 
 
 **For YouTube**:
