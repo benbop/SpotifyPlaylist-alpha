@@ -18,8 +18,8 @@ Set up Spotify and YouTube API keys:
   
 - Set environment variables:
 
--  export SPOTIFY_CLIENT_ID=your_spotify_client_id
--  export SPOTIFY_CLIENT_SECRET=your_spotify_client_secret:
+1. export SPOTIFY_CLIENT_ID=your_spotify_client_id
+1.  export SPOTIFY_CLIENT_SECRET=your_spotify_client_secret:
 ##
 
 ## **For YouTube**:
