@@ -42,7 +42,7 @@ namespace SpotifyPlaylist_alpha
             SpotifyApiCalls SpotifyApi = new SpotifyApiCalls();
 
 
-            var playlist = await SpotifyApiCalls.GetPlaylistAsync("6lyWdNcyXZmZkI7W46Dd7M");
+            var playlist = await SpotifyApiCalls.GetPlaylistAsync("YOUR_PLAYLIST_ID");
             foreach (PlaylistTrack<IPlayableItem> item in playlist.Tracks.Items)
             {
                 if (item.Track is FullTrack track)
