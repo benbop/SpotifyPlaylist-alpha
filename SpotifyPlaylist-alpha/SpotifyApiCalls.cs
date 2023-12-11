@@ -25,7 +25,10 @@ namespace SpotifyPlaylist_alpha
         {
             var config = SpotifyClientConfig.CreateDefault();
 
-            var request = new ClientCredentialsRequest("503a274f9a5c492394417f1b73716f5a", "6707f44d2ece492596137c920f2e24ec");
+           var clientId = Environment.GetEnvironmentVariable("SPOTIFY_CLIENT_ID");
+            var clientSecret = Environment.GetEnvironmentVariable("SPOTIFY_CLIENT_SECRET");
+
+            var request = new ClientCredentialsRequest(clientId, clientSecret);
             var response = await new OAuthClient(config).RequestToken(request);
 
             var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
