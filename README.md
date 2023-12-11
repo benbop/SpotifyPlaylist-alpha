@@ -21,8 +21,6 @@ For YouTube:
 
 Follow the YouTube API documentation to create a project and obtain an API key.
 Set environment variables:
-bash
-Copy code
 export YOUTUBE_API_KEY=your_youtube_api_key
 Install .NET SDK:
 
