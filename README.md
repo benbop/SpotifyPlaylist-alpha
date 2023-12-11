@@ -12,9 +12,9 @@ Set up Spotify and YouTube API keys:
 
 ## For Spotify:
 
-Go to the Spotify Developer Dashboard.
-Create a new application to obtain the Client ID and Client Secret.
-Set environment variables:
+- Go to the Spotify Developer Dashboard.
+- Create a new application to obtain the Client ID and Client Secret.
+- Set environment variables:
 
 -  export SPOTIFY_CLIENT_ID=your_spotify_client_id
 -  export SPOTIFY_CLIENT_SECRET=your_spotify_client_secret:
