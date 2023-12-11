@@ -20,7 +20,7 @@ Set environment variables:
 2. export SPOTIFY_CLIENT_SECRET=your_spotify_client_secret:
 
 
-**For YouTube**:
+## **For YouTube**:
 
 Follow the YouTube API documentation to create a project and obtain an API key.
 Set environment variables:
